@@ -30,7 +30,7 @@ public class MainActivity extends Activity {
 
     private SimpleWebPage mWP;
 
-    static final String testUrl = "https://github.com/Qihoo360/RePlugin";
+    static final String testUrl = "https://www.baidu.com";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -19,8 +19,10 @@ pluginManagement {
         mavenCentral()
         gradlePluginPortal()
         mavenLocal()
+        maven { url 'https://jitpack.io' }
         maven {
             allowInsecureProtocol = true
+            //url "http://maven.geelib.360.cn/nexus/service/rest/repository/browse/replugin/"
             url "http://maven.geelib.360.cn/nexus/repository/replugin/"}
     }
     resolutionStrategy {
@@ -40,6 +42,7 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         mavenLocal()
+        maven { url 'https://jitpack.io' }
         maven {
             allowInsecureProtocol = true
             url "http://maven.geelib.360.cn/nexus/repository/replugin/"}

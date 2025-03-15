@@ -64,6 +64,9 @@ public class SampleApplication extends RePluginApplication {
 
         // 在Art上，优化第一次loadDex的速度
         // c.setOptimizeArtLoadDex(true);
+
+        //在插件安装时，禁止将文件“移动”到app_p_a目录下；只能此处调用
+        c.setMoveFileWhenInstalling(false);
         return c;
     }
 
