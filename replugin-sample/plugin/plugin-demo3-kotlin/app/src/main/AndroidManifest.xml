@@ -36,32 +36,5 @@
             android:name="com.qihoo360.plugin.version.ver"
             android:value="100" />
 
-        <activity
-            android:name="com.qihoo360.replugin.sample.demo3.MainActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation"
-            android:exported="true"
-            android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
-        <!-- theme 测试 -->
-        <activity
-            android:name="com.qihoo360.replugin.sample.demo3.activity.theme.ThemeBlackNoTitleBarActivity"
-            android:exported="false"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Black.NoTitleBar" />
-
-
-        <!-- receivers -->
-        <receiver android:name="com.qihoo360.replugin.sample.demo3.receivers.PluginDemo3Receiver">
-            <intent-filter>
-                <action android:name="com.qihoo360.repluginapp.replugin.receiver.ACTION3" />
-            </intent-filter>
-        </receiver>
-
     </application>
 </manifest>

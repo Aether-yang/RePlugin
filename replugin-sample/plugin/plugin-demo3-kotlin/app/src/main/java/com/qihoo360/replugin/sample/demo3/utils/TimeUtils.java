@@ -57,7 +57,7 @@ public class TimeUtils {
      * @return 时间字符串
      */
     public String getNowString() {
-        return millis2String(System.currentTimeMillis(), DEFAULT_FORMAT);
+        return "V2-" + millis2String(System.currentTimeMillis(), DEFAULT_FORMAT);
     }
 
     /**
