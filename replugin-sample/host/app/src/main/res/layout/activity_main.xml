@@ -63,6 +63,17 @@
         android:layout_gravity="center"
         android:text="@string/installPluginFromAssets" />
 
+    <Switch
+        android:id="@+id/swt_apk_hook_type"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        tools:checked="false"
+        android:showText="true"
+        android:textOff="@string/swtApkHookTypeRePlugin"
+        android:textOn="@string/swtApkHookTypeDynaLoad"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
+
     <Button
         android:id="@+id/btn_install_apk_from_chosen"
         android:layout_width="match_parent"

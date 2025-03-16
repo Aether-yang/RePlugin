@@ -22,7 +22,9 @@
     <string name="startDemo1ForResult">Start plugin demo1(forResult)</string>
     <string name="startDemo1LoadFragment">Start plugin demo1(Fragment from demo1)</string>
     <string name="installPluginFromAssets">Install or update external plugin</string>
-    <string name="installPluginFromChosen">安装指定插件apk</string>
+    <string name="swtApkHookTypeRePlugin">RePlugin安装方式</string>
+    <string name="swtApkHookTypeDynaLoad">动态加载方式</string>
+    <string name="installPluginFromChosen" translatable="false">安装指定插件apk</string>
     <string name="uninstallPluginFromChosen">卸载指定插件apk</string>
     <string name="invokeApkMethodOn">调用指定插件apk方法On</string>
     <string name="invokeApkMethodOff">调用指定插件apk方法Off</string>

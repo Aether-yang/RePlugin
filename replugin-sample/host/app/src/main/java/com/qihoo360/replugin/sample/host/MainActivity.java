@@ -16,6 +16,7 @@
 
 package com.qihoo360.replugin.sample.host;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
@@ -27,6 +28,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
+import android.widget.Switch;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -125,6 +127,16 @@ public class MainActivity extends Activity {
             }
         });
 
+        @SuppressLint("UseSwitchCompatOrMaterialCode") Switch swtApkHookTypeDynaLoader = findViewById(R.id.swt_apk_hook_type);
+        swtApkHookTypeDynaLoader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(TAG, "swt_apk_hook_type with mIsApkHookTypeRePlugin=" + mIsApkHookTypeRePlugin);
+                mIsApkHookTypeRePlugin = !swtApkHookTypeDynaLoader.isChecked();
+                //Toast.makeText(MainActivity.this, "swt_apk_hook_type chosen plugin", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         findViewById(R.id.btn_uninstall_apk_from_chosen).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -157,6 +169,10 @@ public class MainActivity extends Activity {
                             // 文件处理逻辑
                             String apkPath = result.get(0).getFile().getAbsolutePath();
                             Toast.makeText(MainActivity.this, "Chosen apk path="+apkPath, Toast.LENGTH_SHORT).show();
+                            if(!mIsApkHookTypeRePlugin) {
+                                mApkPath = apkPath;
+                                return;
+                            }
                             final ProgressDialog pd = ProgressDialog.show(MainActivity.this, "Installing...", "Please wait...", true, true);
                             // FIXME: 仅用于安装流程演示 2017/7/24
                             new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
@@ -186,7 +202,7 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Log.i(TAG, "btnInvoke isChecked=" + btnInvoke.isChecked());
-                boolean bret = invokePluginMethod(btnInvoke.isChecked());
+                boolean bret = invokePluginMethod(mIsApkHookTypeRePlugin, btnInvoke.isChecked());
                 Log.i(TAG, "btnInvoke bret=" + bret);
                 if(!bret) {
                     Toast.makeText(MainActivity.this, "btnInvoke bret=" + bret, Toast.LENGTH_SHORT).show();
@@ -197,6 +213,9 @@ public class MainActivity extends Activity {
         // 刻意使用Thread的ClassLoader来测试效果
         testThreadClassLoader();
     }
+
+    boolean mIsApkHookTypeRePlugin = true;
+    String mApkPath = null;
 
     private void testThreadClassLoader() {
         // 在2.1.7及以前版本，如果直接调用此方法，则拿到的ClassLoader可能是PathClassLoader或者为空。有极个别Java库会用到此方法
@@ -314,14 +333,20 @@ public class MainActivity extends Activity {
         return RePlugin.preload(mPluginName);
         //return invokeMethod(mPluginName);
     }
-    private boolean invokePluginMethod(boolean isOn) {
+    private boolean invokePluginMethod(boolean isRePlugin, boolean isOn) {
         Log.w(TAG, "invokePluginMethod isOn=" + isOn);
-        return invokeMethod(mPluginName);
+        if(isRePlugin) {
+            ClassLoader loader = loadClassFromPlugin(mPluginName);
+            return invokeMethod(loader);
+        }
+        DynamicLoader dynaLoader = new DynamicLoader(mApkPath, MainActivity.this);
+        return invokeMethod(dynaLoader.getClassLoader());
     }
-    private boolean invokeMethod(String pluginName) {
+
+    private ClassLoader loadClassFromPlugin(String pluginName) {
         Log.w(TAG, "invokeMethod pluginName=" + pluginName);
-        if(pluginName == null) {
-            return false;
+        if (pluginName == null) {
+            return null;
         }
         /**
          * 注意：
@@ -340,8 +365,11 @@ public class MainActivity extends Activity {
 
         //代码使用插件Fragment
         ClassLoader d1ClassLoader = RePlugin.fetchClassLoader(pluginName);//获取插件的ClassLoader
+        return d1ClassLoader;
+    }
+    private boolean invokeMethod(ClassLoader d1ClassLoader) {
         Log.i(TAG, "invokeMethod d1ClassLoader=" + d1ClassLoader);
-        if(d1ClassLoader == null) {
+        if (d1ClassLoader == null) {
             Log.e(TAG, "invokeMethod d1ClassLoader=" + d1ClassLoader);
             return false;
         }
